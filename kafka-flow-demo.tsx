@@ -365,6 +365,35 @@ const NODE_CONTENT: Record<string, { what: string; demo: string; configs: string
   }
 };
 
+// CSS keyframes for pulsating effect
+const pulseKeyframes = `
+  @keyframes confluentPulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(255, 107, 53, 0.7);
+      transform: scale(1);
+    }
+    70% {
+      box-shadow: 0 0 0 10px rgba(255, 107, 53, 0);
+      transform: scale(1.02);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(255, 107, 53, 0);
+      transform: scale(1);
+    }
+  }
+
+  @keyframes confluentGlow {
+    0%, 100% {
+      background-color: rgba(255, 107, 53, 0.15);
+      box-shadow: 0 0 5px rgba(255, 107, 53, 0.3), 0 0 15px rgba(255, 107, 53, 0.2);
+    }
+    50% {
+      background-color: rgba(255, 134, 89, 0.25);
+      box-shadow: 0 0 10px rgba(255, 107, 53, 0.5), 0 0 25px rgba(255, 107, 53, 0.3), 0 0 35px rgba(255, 107, 53, 0.2);
+    }
+  }
+`;
+
 // Main component
 const KafkaFlowDemo: React.FC = () => {
   const [nodes, setNodes] = useState<Node[]>(INITIAL_MODEL.nodes);
@@ -525,6 +554,17 @@ const KafkaFlowDemo: React.FC = () => {
     });
 
     animationRef.current = requestAnimationFrame(animate);
+  }, []);
+
+  // Inject CSS keyframes
+  useEffect(() => {
+    const styleId = 'confluent-pulse-styles';
+    if (!document.getElementById(styleId)) {
+      const style = document.createElement('style');
+      style.id = styleId;
+      style.textContent = pulseKeyframes;
+      document.head.appendChild(style);
+    }
   }, []);
 
   // Start/stop streaming
@@ -967,18 +1007,32 @@ const KafkaFlowDemo: React.FC = () => {
               onClick={() => setIsConfluentMode(true)}
               style={{
                 padding: '6px 16px',
-                backgroundColor: isConfluentMode ? COLORS.confluent : 'transparent',
-                color: isConfluentMode ? 'white' : COLORS.textDim,
-                border: 'none',
+                backgroundColor: isConfluentMode ? COLORS.confluent : (!isConfluentMode ? 'rgba(255, 107, 53, 0.15)' : 'transparent'),
+                color: isConfluentMode ? 'white' : (!isConfluentMode ? '#ff6b35' : COLORS.textDim),
+                border: !isConfluentMode ? '2px solid rgba(255, 107, 53, 0.4)' : 'none',
                 borderRadius: 6,
                 fontFamily: 'inherit',
-                fontWeight: 500,
+                fontWeight: 600,
                 cursor: 'pointer',
                 fontSize: 13,
-                transition: 'all 0.2s ease'
+                transition: 'all 0.2s ease',
+                position: 'relative',
+                overflow: 'hidden',
+                animation: !isConfluentMode ? 'confluentPulse 2s infinite, confluentGlow 3s ease-in-out infinite' : 'none',
+                boxShadow: !isConfluentMode ? '0 0 8px rgba(255, 107, 53, 0.3), 0 0 16px rgba(255, 107, 53, 0.2)' : 'none'
               }}
             >
               Confluent Platform
+              {!isConfluentMode && (
+                <span style={{
+                  marginLeft: '6px',
+                  fontSize: '10px',
+                  opacity: 0.9,
+                  animation: 'confluentGlow 2s ease-in-out infinite'
+                }}>
+                  ✨
+                </span>
+              )}
             </button>
           </div>
           
