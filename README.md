@@ -13,7 +13,7 @@ Interactive visualization of Apache Kafka and Confluent Platform architecture wi
 
 ## Live Demo
 
-🔗 **[View Live Demo](https://kafka-flow-demo.vercel.app/)**
+[View Live Demo](https://kafka-flow-demo.vercel.app/)
 
 ## Local Development
 
