@@ -391,7 +391,7 @@ const KafkaFlowDemo: React.FC = () => {
   });
   
   const animationRef = useRef<number>();
-  const streamIntervalRef = useRef<NodeJS.Timeout>();
+  const streamIntervalRef = useRef<number>();
 
   // Filter nodes and edges based on mode
   const visibleNodes = nodes.filter(n => !n.confluentOnly || isConfluentMode);
@@ -784,7 +784,7 @@ const KafkaFlowDemo: React.FC = () => {
         {/* Lag visualization */}
         {node.id.startsWith('group_') && partitionLag[node.id] && (
           <g style={{ pointerEvents: 'none' }}>
-            {partitionLag[node.id].map((lag, i) => (
+            {partitionLag[node.id].map((_, i) => (
               <rect
                 key={i}
                 x={node.x! - 30 + i * 20}
