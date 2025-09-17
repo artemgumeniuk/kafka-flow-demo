@@ -1341,6 +1341,39 @@ const KafkaFlowDemo: React.FC = () => {
           </div>
         );
       })()}
+
+      {/* Author Credit */}
+      <div style={{
+        position: 'fixed',
+        bottom: 16,
+        right: 16,
+        fontSize: 12,
+        color: COLORS.textDim,
+        fontFamily: 'system-ui, -apple-system, sans-serif',
+        zIndex: 1000,
+        backgroundColor: `${COLORS.bg}ee`,
+        padding: '8px 12px',
+        borderRadius: 6,
+        border: `1px solid ${COLORS.border}`,
+        backdropFilter: 'blur(8px)'
+      }}>
+        Built by{' '}
+        <a
+          href="https://www.linkedin.com/in/artem-gumeniuk/"
+          target="_blank"
+          rel="noopener noreferrer"
+          style={{
+            color: COLORS.primary,
+            textDecoration: 'none',
+            fontWeight: 500,
+            transition: 'color 0.2s ease'
+          }}
+          onMouseEnter={(e) => e.currentTarget.style.color = COLORS.confluentLight}
+          onMouseLeave={(e) => e.currentTarget.style.color = COLORS.primary}
+        >
+          Artem Gumeniuk
+        </a>
+      </div>
     </div>
   );
 };
